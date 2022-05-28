@@ -32,7 +32,7 @@ set FLASK_APP=app.py
 flask run
 ```
 ### On the use of curl and Postman
-For the rest of this documentation, I will be demonstrating using Windows command prompt and Postman. The commands will work in Windows Powershell if [use curl.exe instead of curl] and [--% to stop parsing as powershell commands]:
+For the rest of this documentation, I will be demonstrating using Windows Command Prompt and Postman. The commands will work in Windows Powershell if [use curl.exe instead of curl] and [--% to stop parsing as powershell commands]:
 ```
 curl.exe --%
 ```
@@ -55,6 +55,7 @@ To create a review with the following values
 | 3000 | SGP | Brand A | Laksa | Cup | 4.9 |  
 
 On Postman, send POST to `http://127.0.0.1:5000/reviews` and use the following as Body input: `{"ID":"3000","Country":"SGP","Brand":"Brand A","Type":"Laksa","Package":"Cup","Rating":4.9}`  
+  
 On Windows Command Prompt
 ```
 curl -i http://127.0.0.1:5000/reviews -X POST -H "Content-Type: application/json" -d "{\"ID\":\"3000\", \"Country\": \"SGP\", \"Brand\": \"Brand A\",\"Type\": \"Laksa\",\"Package\": \"Cup\",\"Rating\": \"4.9\"}"
@@ -63,7 +64,9 @@ curl -i http://127.0.0.1:5000/reviews -X POST -H "Content-Type: application/json
 
 ## Get specific review
 Endpoint: `http://127.0.0.1:5000/reviews/<rowid>`, HTTP Method: GET  
+  
 On Postman, send GET to `http://127.0.0.1:5000/reviews/1`  
+  
 On Windows Command Prompt
 ```
 curl -i http://127.0.0.1:5000/reviews/1
@@ -74,7 +77,9 @@ Endpoint: `http://127.0.0.1:5000/reviews/<rowid>`, HTTP Method: PUT or PATCH
 ID must match the one used when review was created.
 #### PUT (replaces all columns)
 Country and Brand are required and cannot be empty. [Country must be found in the ISO 3166-1]  
+  
 On Postman, send PUT to `http://127.0.0.1:5000/reviews/1` and use the following as Body input: `{“ID”:“1”,“Country”:“SGP”,“Brand”:“Brand A”,“Type”:“Laksa”,“Package”:“Cup”,“Rating”:4.9}`  
+  
 On Windows Command Prompt
 ```
 curl -i http://127.0.0.1:5000/reviews/1 -X PUT -H "Content-Type: application/json" -d "{\"ID\":\"1\", \"Country\": \"SGP\", \"Brand\": \"Brand A\",\"Type\": \"Laksa\",\"Package\": \"Cup\",\"Rating\": \"4.9\"}"
@@ -82,7 +87,9 @@ curl -i http://127.0.0.1:5000/reviews/1 -X PUT -H "Content-Type: application/jso
 ![putReview](https://github.com/royangkr/ramen-ratings/raw/main/screenshots/putReview.PNG "putReview")
 #### PATCH (changes some columns)
 Country and Brand are not required but cannot be empty. [Country must be found in the ISO 3166-1]  
+  
 On Postman, send PATCH to `http://127.0.0.1:5000/reviews/1` and use the following as Body input: `{“ID”:“1”,“Rating”:4.8}`  
+  
 On Windows Command Prompt
 ```
 curl -i http://127.0.0.1:5000/reviews/1 -X PATCH -H "Content-Type: application/json" -d "{\"ID\":\"1\",\"Rating\": \"4.8\"}"
@@ -91,7 +98,9 @@ curl -i http://127.0.0.1:5000/reviews/1 -X PATCH -H "Content-Type: application/j
 ## Delete review
 Endpoint: `http://127.0.0.1:5000/reviews/<rowid>`, HTTP Method: DELETE  
 ID must match the one used when review was created.  
+  
 On Postman, send DELETE to `http://127.0.0.1:5000/reviews/1` and use the following as Body input: `{“ID”:“1”}`  
+  
 On Windows Command Prompt
 ```
 curl -i http://127.0.0.1:5000/reviews/1 -X DELETE -H "Content-Type: application/json" -d "{\"ID\":\"1\"}"
@@ -104,8 +113,10 @@ When reviews are created, the Country value must be found in the ISO 3166-1, a s
 For example, Singapore in the ISO 3166-1 is `Country(name='Singapore', alpha2='SG', alpha3='SGP', numeric='702')`. The name or codes are accepted and when filtered by country, any row with County that matches name or code (no need to match case) will be shown.  
 Accepted values: `SGP, sgp, sGp, Singapore, siNgapore, SG, sg, 702` etc  
 Unaccepted/Wrong values: `Singapo, ingapore, s, gp(points to Guadeloupe)` etc  
-Notably, in the sample dataset, only Country "UK" does not match any of the countries in ISO 3166-1. Tha is becuase United Kingdom is `Country(name='United Kingdom of Great Britain and Northern Ireland', alpha2='GB', alpha3='GBR', numeric='826')`. I manually added it as an acceptable value.  
+Notably, in the sample dataset, only Country "UK" does not match any of the countries in ISO 3166-1. That is becuase United Kingdom is `Country(name='United Kingdom of Great Britain and Northern Ireland', alpha2='GB', alpha3='GBR', numeric='826')`. I manually added it as an acceptable value.  
+  
 On Postman, send GET to `http://127.0.0.1:5000/reviews?country=GB`  
+  
 On Windows Command Prompt
 ```
 curl -i http://127.0.0.1:5000/reviews?country=GB
@@ -113,7 +124,9 @@ curl -i http://127.0.0.1:5000/reviews?country=GB
 ![listCountry](https://github.com/royangkr/ramen-ratings/raw/main/screenshots/listCountry.PNG "listCountry")
 ## Get a list of ramen reviews based on a partial text
 Endpoint: `http://127.0.0.1:5000/reviews?q=<partial text>`, HTTP Method: GET  
+  
 On Postman, send GET to `http://127.0.0.1:5000/reviews?q=Seaweed`  
+  
 On Windows Command Prompt
 ```
 curl -i http://127.0.0.1:5000/reviews?q=Seaweed
