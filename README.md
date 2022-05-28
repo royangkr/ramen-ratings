@@ -130,4 +130,4 @@ curl -i http://127.0.0.1:5000/reviews?q=Seaweed
    [use curl.exe instead of curl]: <https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwipkcrgjIL4AhXDW3wKHSuzCVIQFnoECBAQAw&url=https%3A%2F%2Fwww.delftstack.com%2Fhowto%2Fpowershell%2Frun-curl-command-via-powershell%2F%23%3A~%3Atext%3Dthe%2520curl%2520in%2520Windows%2520PowerShell%2Cto%2520the%2520Invoke%252DWebRequest%2520cmdlet.&usg=AOvVaw1gDd4xaskqQb9CzNHIJANZ>
    [--% to stop parsing as powershell commands]: <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parsing?view=powershell-7.2#the-stop-parsing-token>
    [unique rowid]:https://www.sqlite.org/rowidtable.html
-   [Country must be found in the ISO 3166-1]:####Restriction-on-Country-value
+   [Country must be found in the ISO 3166-1]:#restriction-on-country-value
