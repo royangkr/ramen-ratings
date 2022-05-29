@@ -1,12 +1,31 @@
 # Ramen Ratings API
-
+## Data cleaning
+ramen-ratings.csv had missing/invalid data.
+### Missing/Weird Package
+![missingPackage](https://github.com/royangkr/ramen-ratings/raw/main/screenshots/beforeextrapolatingpackage.PNG "missingPackage")
+Review 2167, 2351-2356, 2457 are missing data in the Package column. I try to extrapolate from previous data.  
+Ideally, if the Country, Brand and Type matches, I would be able accurately extrapolate the missing Package. However, for each review missing Package, there was no other review that matched its Country, Brand and Type.  
+I decided that if the Brand and Type is the same, the package should probably be the same.  
+![exampleExtrapolate](https://github.com/royangkr/ramen-ratings/raw/main/screenshots/exampleExtrapolate.PNG "exampleExtrapolate")
+For example, most review that had "Brand A" and "Shoyu Ramen" were of "Pack" so I extrapolate that the Package for review 2355 is "Pack". For the reviews with missing Package, I extrapolate if confidence level is >80%. I could do so for 5/8 reviews that were missing Package.  I also tried matching Country and Brand, and just Brand, but could not get >80% confidence so we still have 3 reviews with missing Package.  
+  
+Review 82 has Package "Can" and Review 1440 has Package "Bar", which each occur once and does not seem like an applicable unit for ramen. I tried the above extrapolation but was not successful, so I left them as Can and Bar.
+### Missing Type
+Reviews 2482-2494,2595-2606 are missing data in the Type column  
+I tried to extrapolate the Type for reviews missing Type, but it was significantly harder because Type is not repeated much across the dataset.  
+### Missing Rating
+Reviews 47,137,1008 have "#VALUE!" in the Rating column. Reviews 2430-2435,2595-2606 are missing data in the Rating column.  
+Lastly, I decided to remove all reviews that have missing/invalid rating, because this is supposed to be a ramen ratings database, the review is meaningless without a proper rating.
+### Result from cleaning
+![cleanedData](https://github.com/royangkr/ramen-ratings/raw/main/screenshots/cleanedData.PNG "cleanedData")
+Because I dropped reviews with missing/invalid ratings, I am down to 2595 reviews from 2615. I have 13 reviews missing Type, down from 24. I have 3 reviews missing Package, down from 8.
 ## Design considerations
 I want all the data provided in the sample dataset to be included in the database. As such, I assume all the rows in the sample dataset are valid i.e.
-- ID need not be unique, but must not be NULL
+- ID need not be unique, but must not be empty or NULL
 - [Country must be found in the ISO 3166-1]
-- Type can be NULL
-- Package can be NULL
-- Rating, while usually between 0.0-5.0, could contain invalid data such as #VALUE! or NULL
+- Type can be NULL, but must not be empty
+- Package can be NULL, but must not be empty
+- Rating must be between 0.0-5.0
 
 Importantly, I decided to not use ID as the primary key and instead use the [unique rowid]. This gave me the opportunity to use the ID as the “ID/token of the reviewer”. When submitting reviews, the reviewer is asked to include an ID. If someone wants to modify/delete the review, he has to enter the correct ID.
 
@@ -29,6 +48,7 @@ py -m pip install -r requirements.txt
 ```
 python init_db.py
 set FLASK_APP=app.py
+set FLASK_ENVIRONMENT=development
 flask run
 ```
 ### On the use of curl and Postman
@@ -38,7 +58,9 @@ curl.exe --%
 ```
 
 ## List all reviews
-Endpoint: `http://127.0.0.1:5000/reviews`, HTTP Method: GET  
+Endpoint: `http://127.0.0.1:5000/reviews`, HTTP Method: GET
+Since I am using ID as a token, I hide it when listing reviews and show rowid instead.  
+  
 On Windows Command Prompt
 ```
 curl -i http://127.0.0.1:5000/reviews
@@ -111,9 +133,10 @@ Endpoint: `http://127.0.0.1:5000/reviews?countr=<country>`, HTTP Method: GET
 #### Restriction on Country value
 When reviews are created, the Country value must be found in the ISO 3166-1, a standard defining codes for the names of countries.  
 For example, Singapore in the ISO 3166-1 is `Country(name='Singapore', alpha2='SG', alpha3='SGP', numeric='702')`. The name or codes are accepted and when filtered by country, any row with County that matches name or code (no need to match case) will be shown.  
-Accepted values: `SGP, sgp, sGp, Singapore, siNgapore, SG, sg, 702` etc  
-Unaccepted/Wrong values: `Singapo, ingapore, s, gp(points to Guadeloupe)` etc  
-Notably, in the sample dataset, only Country "UK" does not match any of the countries in ISO 3166-1. That is becuase United Kingdom is `Country(name='United Kingdom of Great Britain and Northern Ireland', alpha2='GB', alpha3='GBR', numeric='826')`. I manually added it as an acceptable value.  
+- Accepted values: `SGP, sgp, sGp, Singapore, siNgapore, SG, sg, 702` etc  
+- Unaccepted/Wrong values: `Singapo, ingapore, s, gp(points to Guadeloupe)` etc
+
+Notably, in the sample dataset, only Country "UK" does not match any of the countries in ISO 3166-1. That is becuase United Kingdom is `Country(name='United Kingdom of Great Britain and Northern Ireland', alpha2='GB', alpha3='GBR', numeric='826')`. I manually added UK as an acceptable value of the same country as GB.  
   
 On Postman, send GET to `http://127.0.0.1:5000/reviews?country=GB`  
   
