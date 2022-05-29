@@ -48,7 +48,7 @@ Importantly, I decided to not use ID as the primary key and instead use the [uni
 Install [Python 3]  
 Enter the project directory, create a virtual env and enter it
 ```
-cd ramen_ratings
+cd ramen-ratings-main
 py -m pip install --upgrade pip
 py -m pip install --user virtualenv
 py -m venv env
@@ -63,7 +63,6 @@ py -m pip install -r requirements.txt
 ```
 python init_db.py
 set FLASK_APP=app.py
-set FLASK_ENVIRONMENT=development
 flask run
 ```
 ### On the use of curl and Postman
@@ -115,7 +114,7 @@ ID must match the one used when review was created.
 #### PUT (replaces all columns)
 Country and Brand are required and cannot be empty. [Country must be found in the ISO 3166-1]  
   
-On Postman, send PUT to `http://127.0.0.1:5000/reviews/1` and use the following as Body input: `{“ID”:“1”,“Country”:“SGP”,“Brand”:“Brand A”,“Type”:“Laksa”,“Package”:“Cup”,“Rating”:4.9}`  
+On Postman, send PUT to `http://127.0.0.1:5000/reviews/1` and use the following as Body input: `{"ID":"1","Country":"SGP","Brand":"Brand A","Type":"Laksa","Package":"Cup","Rating":4.9}`  
   
 On Windows Command Prompt
 ```
@@ -125,7 +124,7 @@ curl -i http://127.0.0.1:5000/reviews/1 -X PUT -H "Content-Type: application/jso
 #### PATCH (changes some columns)
 Country and Brand are not required but cannot be empty. [Country must be found in the ISO 3166-1]  
   
-On Postman, send PATCH to `http://127.0.0.1:5000/reviews/1` and use the following as Body input: `{“ID”:“1”,“Rating”:4.8}`  
+On Postman, send PATCH to `http://127.0.0.1:5000/reviews/1` and use the following as Body input: `{"ID":"1","Rating":4.8}`  
   
 On Windows Command Prompt
 ```
@@ -136,7 +135,7 @@ curl -i http://127.0.0.1:5000/reviews/1 -X PATCH -H "Content-Type: application/j
 Endpoint: `http://127.0.0.1:5000/reviews/<rowid>`, HTTP Method: DELETE  
 ID must match the one used when review was created.  
   
-On Postman, send DELETE to `http://127.0.0.1:5000/reviews/1` and use the following as Body input: `{“ID”:“1”}`  
+On Postman, send DELETE to `http://127.0.0.1:5000/reviews/1` and use the following as Body input: `{"ID":"1"}`  
   
 On Windows Command Prompt
 ```
