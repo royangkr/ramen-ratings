@@ -2,12 +2,12 @@
 ## Data cleaning
 ramen-ratings.csv had missing/invalid data.
 ### Missing/Weird Package
-![missingPackage](https://github.com/royangkr/ramen-ratings/raw/main/screenshots/beforeextrapolatingpackage.PNG "missingPackage")
+![missingPackage](https://github.com/royangkr/ramen-ratings/raw/main/screenshots/beforeextrapolatingpackage.PNG "missingPackage")  
 Review 2167, 2351-2356, 2457 are missing data in the Package column. I try to extrapolate from previous data.  
 Ideally, if the Country, Brand and Type matches, I would be able accurately extrapolate the missing Package. However, for each review missing Package, there was no other review that matched its Country, Brand and Type.  
 I decided that if the Brand and Type is the same, the package should probably be the same.  
-![exampleExtrapolate](https://github.com/royangkr/ramen-ratings/raw/main/screenshots/exampleExtrapolate.PNG "exampleExtrapolate")
-For example, most review that had "Brand A" and "Shoyu Ramen" were of "Pack" so I extrapolate that the Package for review 2355 is "Pack". For the reviews with missing Package, I extrapolate if confidence level is >80%. I could do so for 5/8 reviews that were missing Package.  I also tried matching Country and Brand, and just Brand, but could not get >80% confidence so we still have 3 reviews with missing Package.  
+![exampleExtrapolate](https://github.com/royangkr/ramen-ratings/raw/main/screenshots/exampleExtrapolate.PNG "exampleExtrapolate")  
+For example, most review that had "Brand A" and "Shoyu Ramen" were of "Pack" so I extrapolate that the Package for review 2355 is "Pack". For the reviews with missing Package, I extrapolate if confidence level is >80%. I could do so for 5/8 reviews that were missing Package.  I also tried matching Country and Brand, and just Brand, but could not get >80% confidence so I still have 3 reviews with missing Package.  
   
 Review 82 has Package "Can" and Review 1440 has Package "Bar", which each occur once and does not seem like an applicable unit for ramen. I tried the above extrapolation but was not successful, so I left them as Can and Bar.
 ### Missing Type
@@ -17,7 +17,7 @@ I tried to extrapolate the Type for reviews missing Type, but it was significant
 Reviews 47,137,1008 have "#VALUE!" in the Rating column. Reviews 2430-2435,2595-2606 are missing data in the Rating column.  
 Lastly, I decided to remove all reviews that have missing/invalid rating, because this is supposed to be a ramen ratings database, the review is meaningless without a proper rating.
 ### Result from cleaning
-![cleanedData](https://github.com/royangkr/ramen-ratings/raw/main/screenshots/cleanedData.PNG "cleanedData")
+![cleanedData](https://github.com/royangkr/ramen-ratings/raw/main/screenshots/cleanedData.PNG "cleanedData")  
 Because I dropped reviews with missing/invalid ratings, I am down to 2595 reviews from 2615. I have 13 reviews missing Type, down from 24. I have 3 reviews missing Package, down from 8.
 ## Design considerations
 I want all the data provided in the sample dataset to be included in the database. As such, I assume all the rows in the sample dataset are valid i.e.
@@ -27,7 +27,9 @@ I want all the data provided in the sample dataset to be included in the databas
 - Package can be NULL, but must not be empty
 - Rating must be between 0.0-5.0
 
-Importantly, I decided to not use ID as the primary key and instead use the [unique rowid]. This gave me the opportunity to use the ID as the “ID/token of the reviewer”. When submitting reviews, the reviewer is asked to include an ID. If someone wants to modify/delete the review, he has to enter the correct ID.
+Importantly, I decided to not use ID as the primary key and instead use the [unique rowid]. This gave me the opportunity to use the ID as the “ID/token of the reviewer”. When submitting reviews, the reviewer is asked to include an ID. If someone wants to modify/delete the review, he has to enter the correct ID.  
+  
+(Note: some reviews imported from the sample dataset will have the same ID and rowid. If you think this defeats the purpose of using the ID as a secret token, you can uncomment line 38 of init_db.py "random.shuffle(to_db)", but when you want to delete any of them, you would have to manually search for their ID in ramen-ratings.csv :laughing: )
 
 ## Installation for Windows
 Install [Python 3]  
