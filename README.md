@@ -1,4 +1,17 @@
 # Ramen Ratings API
+By Roy Ang royangkr@gmail.com
+## Contents
+- [Data Cleaning](#data-cleaning)
+- [Design considerations](#design-considerations)
+- [Installation for Windows](#installation-for-windows)
+- [Running the server](#running-the-server)
+- [List all reviews](#list-all-reviews)
+- [Create a new review](#create-a-new-review)
+- [Get specific review](#get-specific-review)
+- [Modify review](#modify-review)
+- [Delete review](#delete-review)
+- [Get a list of ramen reviews filtered by a country](#get-a-list-of-ramen-reviews-filtered-by-a-country)
+- [Get a list of ramen reviews based on a partial text](#get-a-list-of-ramen-reviews-based-on-a-partial-text)
 ## Data cleaning
 ramen-ratings.csv had missing/invalid data.
 ### Missing/Weird Package
@@ -12,7 +25,7 @@ For example, most review that had "Brand A" and "Shoyu Ramen" were of "Pack" so 
 Review 82 has Package "Can" and Review 1440 has Package "Bar", which each occur once and does not seem like an applicable unit for ramen. I tried the above extrapolation but was not successful, so I left them as Can and Bar.
 ### Missing Type
 Reviews 2482-2494,2595-2606 are missing data in the Type column  
-I tried to extrapolate the Type for reviews missing Type, but it was significantly harder because Type is not repeated much across the dataset.  
+I tried to extrapolate the Type for reviews missing Type, but was not successful because Type is not repeated much across the dataset.  
 ### Missing Rating
 Reviews 47,137,1008 have "#VALUE!" in the Rating column. Reviews 2430-2435,2595-2606 are missing data in the Rating column.  
 Lastly, I decided to remove all reviews that have missing/invalid rating, because this is supposed to be a ramen ratings database, the review is meaningless without a proper rating.
